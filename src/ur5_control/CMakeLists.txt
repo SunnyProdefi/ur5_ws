@@ -8,6 +8,8 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   std_msgs
+  std_srvs
+  sensor_msgs
   trac_ik_lib
   trajectory_msgs
 )
@@ -22,7 +24,15 @@ find_package(Boost COMPONENTS filesystem serialization system REQUIRED)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES ur5_control
- CATKIN_DEPENDS kdl_parser roscpp rospy sensor_msgs std_msgs trac_ik_lib trajectory_msgs
+ CATKIN_DEPENDS 
+ kdl_parser 
+ roscpp 
+ rospy 
+ sensor_msgs 
+ std_msgs 
+ trac_ik_lib 
+ trajectory_msgs 
+ std_srvs 
 #  DEPENDS system_lib
 )
 
@@ -48,3 +58,9 @@ target_link_libraries(dynamics_and_control
   ${Boost_LIBRARIES}
 )
 add_dependencies(dynamics_and_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+
+catkin_install_python(PROGRAMS
+  scripts/trajectory_planner.py
+  scripts/call_trajectory_planner.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)

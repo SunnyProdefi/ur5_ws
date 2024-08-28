@@ -1,3 +1,7 @@
+#include "pinocchio/multibody/data.hpp"
+#include "pinocchio/multibody/model.hpp"
+#include "pinocchio/parsers/urdf.hpp"
+
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
 #include <std_msgs/Float64MultiArray.h>
@@ -7,15 +11,6 @@
 #include <Eigen/Dense>
 #include <string>
 #include <vector>
-
-#include "pinocchio/algorithm/geometry.hpp"
-#include "pinocchio/algorithm/joint-configuration.hpp"
-#include "pinocchio/fwd.hpp"
-#include "pinocchio/multibody/data.hpp"
-#include "pinocchio/multibody/model.hpp"
-#include "pinocchio/parsers/srdf.hpp"
-#include "pinocchio/parsers/urdf.hpp"
-#include "boost/variant.hpp"
 
 using namespace std;
 
@@ -67,7 +62,6 @@ void publishJointEfforts(const Eigen::VectorXd &efforts) {
 }
 
 void jointStateCallback(const sensor_msgs::JointState::ConstPtr &msg) {
-  //   cout << "Received joint states" << endl;
   joint_positions.resize(msg->position.size());
   for (size_t i = 0; i < msg->position.size(); ++i) {
     joint_positions[i] = msg->position[i];
@@ -97,21 +91,19 @@ void jointStateCallback(const sensor_msgs::JointState::ConstPtr &msg) {
 //   return a;
 // }
 
-// void initializeModel(const string &urdf_path) {
-//   pinocchio::urdf::buildModel(urdf_path, model);
-//   data = pinocchio::Data(model);
-//   cout << "Model initialized" << endl;
-// }
+void initializeModel(const string &urdf_path) {
+  pinocchio::urdf::buildModel(urdf_path, model);
+  data = pinocchio::Data(model);
+  cout << "Model initialized" << endl;
+}
 
-// void printModelDetails(const pinocchio::Model &model) {
-//   cout << "Model has " << model.njoints << " joints." << endl;
-//   // 打印每个关节的名称
-//   for (size_t i = 0; i < model.njoints; ++i) {
-//     cout << "Joint " << i << ": " << model.names[i] << endl;
-//   }
-//   cout << "Model has " << model.nframes << " frames." << endl;
-//   // Additional details can be printed similarly
-// }
+void printModelDetails(const pinocchio::Model &model) {
+  cout << "Model has " << model.njoints << " joints." << endl;
+  for (size_t i = 0; i < model.njoints; ++i) {
+    cout << "Joint " << i << ": " << model.names[i] << endl;
+  }
+  cout << "Model has " << model.nframes << " frames." << endl;
+}
 
 // void computeDynamics(const pinocchio::Model &model, pinocchio::Data &data,
 //                      const Eigen::VectorXd &q, const Eigen::VectorXd &v,
@@ -143,8 +135,8 @@ int main(int argc, char **argv) {
 
   string urdf_path =
       "/home/prodefi/ur5_ws/src/universal_robot/ur_description/urdf/ur5.urdf";
-  // initializeModel(urdf_path);
-  // printModelDetails(model);
+  initializeModel(urdf_path);
+  printModelDetails(model);
 
   joint_trajectory_pub = nh.advertise<trajectory_msgs::JointTrajectory>(
       "/eff_joint_traj_controller/command", 10);
@@ -153,7 +145,6 @@ int main(int argc, char **argv) {
   ros::Subscriber sub = nh.subscribe("/joint_states", 10, jointStateCallback);
   ros::Rate rate(100);  // 10 Hz
 
-  // Wait for the first joint state update
   while (ros::ok() && !received_state) {
     ros::spinOnce();
     rate.sleep();
