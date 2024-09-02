@@ -59,6 +59,33 @@ target_link_libraries(dynamics_and_control
 )
 add_dependencies(dynamics_and_control ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
 
+
+add_executable(joint_dynamics_calculator src/joint_dynamics_calculator.cpp)
+target_link_libraries(joint_dynamics_calculator 
+  ${catkin_LIBRARIES} 
+  ${EIGEN3_LIBRARIES} 
+  ${pinocchio_LIBRARIES}
+  /opt/openrobots/lib/libpinocchio_default.so 
+  /opt/openrobots/lib/libpinocchio_collision.so 
+  /opt/openrobots/lib/libpinocchio_parsers.so 
+  ${urdfdom_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+add_dependencies(joint_dynamics_calculator ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+
+add_executable(ur5_set_zero_position src/ur5_set_zero_position.cpp)
+target_link_libraries(ur5_set_zero_position 
+  ${catkin_LIBRARIES} 
+  ${EIGEN3_LIBRARIES} 
+  ${pinocchio_LIBRARIES}
+  /opt/openrobots/lib/libpinocchio_default.so 
+  /opt/openrobots/lib/libpinocchio_collision.so 
+  /opt/openrobots/lib/libpinocchio_parsers.so 
+  ${urdfdom_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+add_dependencies(ur5_set_zero_position ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+
 catkin_install_python(PROGRAMS
   scripts/trajectory_planner.py
   scripts/call_trajectory_planner.py

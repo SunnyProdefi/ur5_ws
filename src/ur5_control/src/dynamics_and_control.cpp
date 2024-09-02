@@ -1,6 +1,9 @@
-#include "pinocchio/multibody/data.hpp"
-#include "pinocchio/multibody/model.hpp"
-#include "pinocchio/parsers/urdf.hpp"
+#include <pinocchio/algorithm/aba.hpp>
+#include <pinocchio/algorithm/crba.hpp>
+#include <pinocchio/algorithm/rnea.hpp>
+#include <pinocchio/multibody/data.hpp>
+#include <pinocchio/multibody/model.hpp>
+#include <pinocchio/parsers/urdf.hpp>
 
 #include <ros/ros.h>
 #include <sensor_msgs/JointState.h>
@@ -9,6 +12,7 @@
 #include <trajectory_msgs/JointTrajectoryPoint.h>
 
 #include <Eigen/Dense>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -105,29 +109,25 @@ void printModelDetails(const pinocchio::Model &model) {
   cout << "Model has " << model.nframes << " frames." << endl;
 }
 
-// void computeDynamics(const pinocchio::Model &model, pinocchio::Data &data,
-//                      const Eigen::VectorXd &q, const Eigen::VectorXd &v,
-//                      const Eigen::VectorXd &a) {
-//   // Compute torques using RNEA
-//   Eigen::VectorXd tau = pinocchio::rnea(model, data, q, v, a);
+void computeDynamics(const pinocchio::Model &model, pinocchio::Data &data,
+                     const Eigen::VectorXd &q, const Eigen::VectorXd &v,
+                     const Eigen::VectorXd &a) {
+  Eigen::VectorXd tau = pinocchio::rnea(model, data, q, v, a);
 
-//   // 给joint_efforts赋值
-//   joint_efforts.resize(tau.size());
-//   for (size_t i = 0; i < tau.size(); ++i) {
-//     joint_efforts[i] = tau[i] / 2;
-//   }
+  joint_efforts.resize(tau.size());
+  for (size_t i = 0; i < tau.size(); ++i) {
+    joint_efforts[i] = tau[i] / 2;
+  }
 
-//   // Compute the mass matrix
-//   pinocchio::crba(model, data, q);
-//   Eigen::MatrixXd &M = data.M;
+  pinocchio::crba(model, data, q);
+  Eigen::MatrixXd &M = data.M;
 
-//   // Compute the gravity term
-//   Eigen::VectorXd g = pinocchio::computeGeneralizedGravity(model, data, q);
+  Eigen::VectorXd g = pinocchio::computeGeneralizedGravity(model, data, q);
 
-//   cout << "Torques: " << tau.transpose() << endl;
-//   //   cout << "Mass matrix: \n" << M << endl;
-//   //   cout << "Gravity vector: " << g.transpose() << endl;
-// }
+  cout << "Torques: " << tau.transpose() << endl;
+  //   cout << "Mass matrix: \n" << M << endl;
+  //   cout << "Gravity vector: " << g.transpose() << endl;
+}
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "joint_state_listener");

@@ -60,13 +60,14 @@ def process_joint_data(joint_data):
     k = 5  # 样条的阶数
     # 边界条件：两端的一阶和二阶导数都设置为0（代表位置、速度、加速度）
     bc_type = ((1, 0.0), (2, 0.0)), ((1, 0.0), (2, 0.0))
-    t_fine = np.linspace(t.min(), t.max(), 1000)  # 在0到3之间生成1000个时间点
+    t_fine = np.linspace(t.min(), t.max(), 150)  # 在0到3之间生成150个时间点,频率：50Hz
 
     joint_trajectories = []
 
     # 循环遍历每个关节
     for i, joint_name in enumerate(joint_names):
-        y = np.array([joint_positions[i], 0])
+        joint_positions_desired = 0
+        y = np.array([joint_positions[i], joint_positions_desired])
         # 创建样条曲线
         tck = make_interp_spline(t, y, k=k, bc_type=bc_type)
         # 计算细分时间点上的位置、速度和加速度
