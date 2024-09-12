@@ -332,7 +332,5 @@
       <parent link="${prefix}flange"/>
       <child link="${prefix}tool0"/>
     </joint>
-    <xacro:include filename="$(find robotiq_85_description)/urdf/robotiq_85_gripper.urdf.xacro" />
-    <xacro:robotiq_85_gripper gripper_prefix="" parent="${prefix}tool0"/>
   </xacro:macro>
 </robot>
