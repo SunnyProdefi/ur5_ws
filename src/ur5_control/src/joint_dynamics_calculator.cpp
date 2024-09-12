@@ -204,8 +204,8 @@ int main(int argc, char **argv) {
   // wrist_1_joint
   // wrist_2_joint
   // wrist_3_joint
-  Kp = {0.1, 5, 5, 0.1, 0.1, 0.1};
-  Kd = {0.01, 1, 1, 0.01, 0.01, 0.01};
+  nh.getParam("/Kp", Kp);
+  nh.getParam("/Kd", Kd);
   vector<double> position_error(6), velocity_error(6);
 
   // 插值到tau_ff的起始点,避免第一次下发的力矩突变,导致机械臂抖动,插值时间为0.5s
@@ -213,9 +213,9 @@ int main(int argc, char **argv) {
   vector<double> tau_ff_end = tau[0];
   vector<double> tau_ff(6);
   int k = 0;
-  while (ros::ok() && k < 500) {
+  while (ros::ok() && k < 25) {
     for (int j = 0; j < 6; ++j) {
-      tau_ff[j] = tau_ff_start[j] + (tau_ff_end[j] - tau_ff_start[j]) * k / 500;
+      tau_ff[j] = tau_ff_start[j] + (tau_ff_end[j] - tau_ff_start[j]) * k / 25;
     }
     k++;
     std_msgs::Float64MultiArray effort_msg;

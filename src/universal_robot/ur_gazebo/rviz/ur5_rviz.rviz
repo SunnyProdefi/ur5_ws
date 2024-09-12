@@ -138,27 +138,27 @@ Visualization Manager:
         base:
           Value: false
         base_link:
-          Value: true
+          Value: false
         base_link_inertia:
           Value: false
         flange:
           Value: false
         forearm_link:
-          Value: true
+          Value: false
         shoulder_link:
-          Value: true
+          Value: false
         tool0:
           Value: false
         tool0_controller:
           Value: false
         upper_arm_link:
-          Value: true
+          Value: false
         world:
           Value: false
         wrist_1_link:
-          Value: true
+          Value: false
         wrist_2_link:
-          Value: true
+          Value: false
         wrist_3_link:
           Value: true
       Marker Alpha: 1
@@ -213,7 +213,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 3.7525362968444824
+      Distance: 2.228342056274414
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -221,17 +221,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 0.49907201528549194
-        Y: 0.14748261868953705
-        Z: -0.26409879326820374
+        X: 0.5226109623908997
+        Y: 0.07420668005943298
+        Z: -0.10825195908546448
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.7803981304168701
+      Pitch: 0.4003981351852417
       Target Frame: <Fixed Frame>
-      Yaw: 5.333583354949951
+      Yaw: 1.3403973579406738
     Saved: ~
 Window Geometry:
   Displays:
@@ -249,5 +249,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1200
-  X: 138
-  Y: 528
+  X: -32
+  Y: -32

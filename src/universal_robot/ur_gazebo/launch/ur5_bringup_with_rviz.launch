@@ -75,4 +75,5 @@
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find ur_gazebo)/rviz/ur5_rviz.rviz" required="true" output="screen"/>
   <node name="rosbag_record_all" pkg="rosbag" type="record" args="-a -O /home/prodefi/ur5_data.bag"/>
+  <rosparam command="load" file="$(find ur5_control)/config/ur5_control.yaml"/>
 </launch>
