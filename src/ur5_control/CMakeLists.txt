@@ -86,6 +86,19 @@ target_link_libraries(ur5_set_zero_position
 )
 add_dependencies(ur5_set_zero_position ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
 
+add_executable(joint_group_eff_controller src/joint_group_eff_controller.cpp)
+target_link_libraries(joint_group_eff_controller 
+  ${catkin_LIBRARIES} 
+  ${EIGEN3_LIBRARIES} 
+  ${pinocchio_LIBRARIES}
+  /opt/openrobots/lib/libpinocchio_default.so 
+  /opt/openrobots/lib/libpinocchio_collision.so 
+  /opt/openrobots/lib/libpinocchio_parsers.so 
+  ${urdfdom_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+add_dependencies(joint_group_eff_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
+
 catkin_install_python(PROGRAMS
   scripts/trajectory_planner.py
   scripts/call_trajectory_planner.py
